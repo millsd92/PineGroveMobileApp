@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="PineGroveMobileApp.LoginPage">
+    
+    <ContentPage.Resources>
+        <StyleSheet Source="Assets/globalstyles.css" />
+    </ContentPage.Resources>
+    
+    <ContentPage.Content>
+        <StackLayout VerticalOptions="FillAndExpand"
+                     HorizontalOptions="FillAndExpand"
+                     BackgroundColor="#333333">
+            <Image Source="pinegrovebanner.png"
+                   Margin="15,5" 
+                   HeightRequest="75"
+                   IsOpaque="True" />
+            <Grid VerticalOptions="FillAndExpand"
+                         HorizontalOptions="FillAndExpand"
+                         BackgroundColor="#999999"
+                         Padding="25">
+                <Label Text="Pine Grove Login"
+                       VerticalOptions="StartAndExpand" 
+                       HorizontalOptions="CenterAndExpand"
+                       FontSize="30"
+                       HorizontalTextAlignment="Center"
+                       FontFamily="{StaticResource Font}"
+                       Grid.Column="0" 
+                       Grid.Row="0"
+                       Grid.ColumnSpan="2" />
+                <Label Text="If you know your username, please provide it below."
+                       VerticalOptions="StartAndExpand"
+                       HorizontalOptions="CenterAndExpand"
+                       FontSize="18"
+                       HorizontalTextAlignment="Center"
+                       FontFamily="{StaticResource Font}"
+                       Grid.Column="0" 
+                       Grid.Row="1"
+                       Grid.ColumnSpan="2"/>
+                <Label Text="Otherwise, use the form below to look up your account."
+                       VerticalOptions="StartAndExpand"
+                       HorizontalOptions="CenterAndExpand"
+                       FontSize="18"
+                       HorizontalTextAlignment="Center"
+                       FontFamily="{StaticResource Font}"
+                       Grid.Column="0" 
+                       Grid.Row="2"
+                       Grid.ColumnSpan="2"/>
+                <Entry x:Name="txtUsername"
+                       VerticalOptions="StartAndExpand"
+                       HorizontalOptions="FillAndExpand"
+                       Placeholder="Username"
+                       HorizontalTextAlignment="Center"
+                       BackgroundColor="#CCCCCC"
+                       Grid.Column="0" 
+                       Grid.Row="3"
+                       Grid.ColumnSpan="2"/>
+                <Button x:Name="btnLogin"
+                        VerticalOptions="StartAndExpand"
+                        HorizontalOptions="CenterAndExpand"
+                        Text="Login"
+                        Clicked="BtnLogin_Clicked"
+                        Grid.Column="0" 
+                        Grid.Row="4"
+                        Grid.ColumnSpan="2"/>
+                <Label Text="Account Lookup"
+                       VerticalOptions="StartAndExpand"
+                       HorizontalOptions="CenterAndExpand"
+                       FontSize="24"
+                       FontFamily="{StaticResource Font} "
+                       Grid.Column="0" 
+                       Grid.Row="5"
+                       Grid.ColumnSpan="2"/>
+                <Entry x:Name="txtFirstName"
+                       VerticalOptions="StartAndExpand"
+                       HorizontalOptions="FillAndExpand"
+                       Placeholder="First Name"
+                       HorizontalTextAlignment="Center"
+                       BackgroundColor="#CCCCCC"
+                       Grid.Column="0" 
+                       Grid.Row="6"
+                       Grid.ColumnSpan="1"/>
+                <Entry x:Name="txtLastName"
+                       VerticalOptions="StartAndExpand"
+                       HorizontalOptions="FillAndExpand"
+                       Placeholder="Last Name"
+                       HorizontalTextAlignment="Center"
+                       BackgroundColor="#CCCCCC"
+                       Grid.Column="1" 
+                       Grid.Row="6"
+                       Grid.ColumnSpan="1"/>
+                <Button x:Name="btnLookup"
+                        VerticalOptions="StartAndExpand"
+                        HorizontalOptions="CenterAndExpand"
+                        Text="Find Me"
+                        Clicked="BtnLookup_Clicked"
+                        Grid.Column="0"
+                        Grid.Row="7"
+                        Grid.ColumnSpan="2" />
+            </Grid>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

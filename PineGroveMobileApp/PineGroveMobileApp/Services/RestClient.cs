@@ -14,7 +14,7 @@ namespace PineGroveMobileApp.Services
 
         public RestClient()
         {
-            _client = RestService.For<IRestable>("http://10.0.0.77:6501/");
+            _client = RestService.For<IRestable>("https://36vhnw37q6.execute-api.us-east-2.amazonaws.com/Prod");
         }
 
         public async Task<User[]> GetUsers()

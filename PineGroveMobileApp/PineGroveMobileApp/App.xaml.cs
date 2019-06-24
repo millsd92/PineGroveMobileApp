@@ -1,5 +1,5 @@
-﻿using System;
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
+using Xamarin.Essentials;
 using PineGroveMobileApp.Services;
 
 namespace PineGroveMobileApp
@@ -11,7 +11,17 @@ namespace PineGroveMobileApp
         {
             InitializeComponent();
             client = new RestClient();
-            MainPage = new MainPage(ref client);
+            if (Connectivity.NetworkAccess == NetworkAccess.Internet)
+            {
+                if (Properties.ContainsKey("Username"))
+                    MainPage = new MainPage(ref client);
+                else
+                    MainPage = new LoginPage(ref client);
+            }
+            else
+            {
+                //TODO: Handle when the user has no internet
+            }
         }
 
         protected override void OnStart()

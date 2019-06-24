@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xamarin.Forms;
 using PineGroveMobileApp.Services;
 
@@ -54,7 +50,8 @@ namespace PineGroveMobileApp
 
         private void BtnRegister_Clicked(object sender, EventArgs e)
         {
-
+            Application.Current.Properties.Remove("Username");
+            Application.Current.MainPage = new LoginPage(ref client);
         }
 
         private void BtnRequest_Clicked(object sender, EventArgs e)
