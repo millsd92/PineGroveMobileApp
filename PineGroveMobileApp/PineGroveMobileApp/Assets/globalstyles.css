@@ -5,3 +5,7 @@ stacklayout {
 label {
     color: #000000;
 }
+
+entry {
+    background-color: #CCCCCC;
+}

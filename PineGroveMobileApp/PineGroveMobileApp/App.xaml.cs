@@ -7,6 +7,8 @@ namespace PineGroveMobileApp
     public partial class App : Application
     {
         private readonly RestClient client;
+        public static readonly System.Drawing.Color toastColor = System.Drawing.Color.FromArgb(51, 51, 51);
+        public static readonly double timeoutTime = 10000;
         public App()
         {
             InitializeComponent();

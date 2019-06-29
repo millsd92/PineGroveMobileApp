@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Refit;
+﻿using Refit;
+using System.Threading;
 using System.Threading.Tasks;
-using System.Net.Http;
 using PineGroveMobileApp.Models;
 
 namespace PineGroveMobileApp.Services
@@ -22,14 +19,14 @@ namespace PineGroveMobileApp.Services
             return await _client.GetUsers();
         }
 
-        public async Task<User> GetUser(string username)
+        public async Task<User> GetUser(string username, CancellationToken token)
         {
-            return await _client.GetUser(username);
+            return await _client.GetUser(username, token);
         }
 
-        public async Task<User[]> GetUsersByName(string firstName, string lastName)
+        public async Task<User[]> GetUsersByName(string firstName, string lastName, CancellationToken token)
         {
-            return await _client.GetUsersByName(firstName, lastName);
+            return await _client.GetUsersByName(firstName, lastName, token);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using Xamarin.Forms;
+using Acr.UserDialogs;
 using PineGroveMobileApp.Services;
 
 namespace PineGroveMobileApp
@@ -10,13 +11,14 @@ namespace PineGroveMobileApp
     [DesignTimeVisible(false)]
     public partial class MainPage : ContentPage
     {
-        private double width = 0;
-        private double height = 0;
+        private double width = 0, height = 0;
         private RestClient client;
 
         public MainPage(ref RestClient client)
         {
             InitializeComponent();
+            if (!Application.Current.Properties.ContainsKey("Username"))
+                lblLogout.Text = "Login / Register";
             this.client = client;
         }
 
@@ -51,6 +53,7 @@ namespace PineGroveMobileApp
         private void BtnRegister_Clicked(object sender, EventArgs e)
         {
             Application.Current.Properties.Remove("Username");
+            UserDialogs.Instance.Toast(new ToastConfig("Successfully logged out!") { BackgroundColor = App.toastColor });
             Application.Current.MainPage = new LoginPage(ref client);
         }
 
