@@ -92,10 +92,7 @@ namespace PineGroveMobileApp
             });
         }
 
-        private async void BtnLookup_Clicked(object sender, EventArgs e)
-        {
-            await Navigation.PushModalAsync(new LookupPage(ref client));
-        }
+        private async void BtnLookup_Clicked(object sender, EventArgs e) { await Navigation.PushModalAsync(new LookupPage(ref client)); }
 
         private void LandscapeOrientation()
         {
@@ -111,6 +108,8 @@ namespace PineGroveMobileApp
             grdAll.Children.Add(btnLogin, 0, 3);
             grdAll.Children.Add(btnLookup, 1, 2);
             grdAll.Children.Add(btnRegister, 1, 3);
+            grdAll.Children.Add(btnSkip, 0, 4);
+            Grid.SetColumnSpan(btnSkip, 2);
         }
 
         private void PortraitOrientation()
@@ -128,7 +127,10 @@ namespace PineGroveMobileApp
             grdAll.Children.Add(btnLookup, 0, 6);
             grdAll.Children.Add(lblRegister, 0, 7);
             grdAll.Children.Add(btnRegister, 0, 8);
+            grdAll.Children.Add(btnSkip, 0, 9);
         }
+
+        private void BtnSkip_Clicked(object sender, EventArgs e) { Application.Current.MainPage = new MainPage(ref client); }
 
         private void BtnRegister_Clicked(object sender, EventArgs e)
         {

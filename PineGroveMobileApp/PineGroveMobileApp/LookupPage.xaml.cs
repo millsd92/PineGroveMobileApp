@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using PineGroveMobileApp.Services;
@@ -156,7 +152,7 @@ namespace PineGroveMobileApp
                         }
                         else
                         {
-                            //Handle if more than one user
+                            //TODO: Handle if more than one user
                         }
                         btnSearch.Text = "That's Not Me!";
                     }

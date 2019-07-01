@@ -52,8 +52,8 @@ namespace PineGroveMobileApp
 
         private void BtnRegister_Clicked(object sender, EventArgs e)
         {
-            Application.Current.Properties.Remove("Username");
-            UserDialogs.Instance.Toast(new ToastConfig("Successfully logged out!") { BackgroundColor = App.toastColor });
+            if (Application.Current.Properties.Remove("Username"))
+                UserDialogs.Instance.Toast(new ToastConfig("Successfully logged out!") { BackgroundColor = App.toastColor });
             Application.Current.MainPage = new LoginPage(ref client);
         }
 

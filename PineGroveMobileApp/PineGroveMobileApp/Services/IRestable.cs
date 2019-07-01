@@ -15,5 +15,11 @@ namespace PineGroveMobileApp.Services
 
         [Get("/api/users/GetNames?firstName={firstName}&lastName={lastName}")]
         Task<User[]> GetUsersByName(string firstName, string lastName, CancellationToken token);
+
+        [Post("/api/announcementrequests")]
+        Task<AnnouncementRequest> CreateAnnouncement([Body] AnnouncementRequest announcement, CancellationToken token);
+
+        [Get("/api/AnnouncementRequests/{announcementId}")]
+        Task<AnnouncementRequest> GetAnnouncement(int announcementId);
     }
 }

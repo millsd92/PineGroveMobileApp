@@ -9,122 +9,124 @@
         <StyleSheet Source="Assets/globalstyles.css" />
     </ContentPage.Resources>
 
-    <StackLayout Spacing="0"
-                 VerticalOptions="FillAndExpand"
-                 HorizontalOptions="FillAndExpand"
-                 BackgroundColor="#333333">
-        <Image Source="pinegrovebanner.png"
-                   Margin="15,5" 
-                   HeightRequest="75"
-                   IsOpaque="True" />
-        <BoxView Color="#000000" 
-                 HeightRequest="1" />
-        <StackLayout x:Name="MainStack"
+    <ContentPage.Content>
+        <StackLayout Spacing="0"
                      VerticalOptions="FillAndExpand"
                      HorizontalOptions="FillAndExpand"
-                     Spacing="0">
-            <StackLayout VerticalOptions="FillAndExpand"
+                     BackgroundColor="#333333">
+            <Image Source="pinegrovebanner.png"
+                       Margin="15,5" 
+                       HeightRequest="75"
+                       IsOpaque="True" />
+            <BoxView Color="#000000" 
+                     HeightRequest="1" />
+            <StackLayout x:Name="MainStack"
+                         VerticalOptions="FillAndExpand"
                          HorizontalOptions="FillAndExpand"
                          Spacing="0">
-                <Grid>
-                    <Image x:Name="imgRequest"
-                           Source="sky.jpg"
-                           Opacity="0.25"
-                           Aspect="Fill" />
-                    <Label Text="Request Prayer or a Visitation" 
-                           VerticalOptions="FillAndExpand" 
-                           HorizontalOptions="FillAndExpand"
-                           FontSize="30"
-                           HorizontalTextAlignment="Center"
-                           VerticalTextAlignment="Center"
-                           FontFamily="{StaticResource Font}" />
-                    <Button x:Name="btnRequest"
-                            Clicked="BtnRequest_Clicked"
-                            VerticalOptions="FillAndExpand"
-                            HorizontalOptions="FillAndExpand"
-                            Opacity="0"
-                            Pressed="BtnRequest_Pressed"
-                            Released="BtnRequest_Released" />
-                </Grid>
-                <BoxView Color="#000000" 
-                         HeightRequest="1" />
-                <Grid>
-                    <Image x:Name="imgEvent"
-                           Source="trees.jpg"
-                           Opacity="0.25"
-                           Aspect="Fill" />
-                    <Label Text="RSVP To An Event" 
-                           VerticalOptions="FillAndExpand" 
-                           HorizontalOptions="FillAndExpand"
-                           FontSize="30"
-                           HorizontalTextAlignment="Center"
-                           VerticalTextAlignment="Center"
-                           FontFamily="{StaticResource Font}" />
-                    <Button x:Name="btnEvent"
-                            Clicked="BtnEvent_Clicked"
-                            VerticalOptions="FillAndExpand"
-                            HorizontalOptions="FillAndExpand"
-                            Opacity="0"
-                            Pressed="BtnEvent_Pressed"
-                            Released="BtnEvent_Released" />
-                </Grid>
-                <BoxView Color="#000000" 
-                         HeightRequest="1" />
-            </StackLayout>
-            <BoxView x:Name="RightBorder"
-                     Color="#000000" 
-                     WidthRequest="1"
-                     IsVisible="False"/>
-            <StackLayout VerticalOptions="FillAndExpand"
-                         HorizontalOptions="FillAndExpand"
-                         Spacing="0">
-                <Grid>
-                    <Image x:Name="imgAnnouncement"
-                           Source="flowers.jpg"
-                           Opacity="0.25"
-                           Aspect="Fill" />
-                    <Label Text="Request an Announcement" 
-                           VerticalOptions="FillAndExpand" 
-                           HorizontalOptions="FillAndExpand"
-                           FontSize="30"
-                           HorizontalTextAlignment="Center"
-                           VerticalTextAlignment="Center" 
-                           FontFamily="{StaticResource Font}" />
-                    <Button x:Name="btnAnnouncement"
-                            Clicked="BtnAnnouncement_Clicked"
-                            VerticalOptions="FillAndExpand"
-                            HorizontalOptions="FillAndExpand"
-                            Opacity="0"
-                            Pressed="BtnAnnouncement_Pressed"
-                            Released="BtnAnnouncement_Released" />
-                </Grid>
-                <BoxView Color="#000000" 
-                         HeightRequest="1" />
-                <Grid>
-                    <Image x:Name="imgRegister"
-                           Source="rocks.jpg"
-                           Opacity="0.25"
-                           Aspect="Fill" />
-                    <Label x:Name="lblLogout"
-                           Text="Logout" 
-                           VerticalOptions="FillAndExpand" 
-                           HorizontalOptions="FillAndExpand"
-                           FontSize="30"
-                           HorizontalTextAlignment="Center"
-                           VerticalTextAlignment="Center"
-                           FontFamily="{StaticResource Font}" />
-                    <Button x:Name="btnRegister"
-                            Clicked="BtnRegister_Clicked"
-                            VerticalOptions="FillAndExpand"
-                            HorizontalOptions="FillAndExpand"
-                            Opacity="0"
-                            Pressed="BtnRegister_Pressed"
-                            Released="BtnRegister_Released"/>
-                </Grid>
-                <BoxView Color="#000000" 
-                         HeightRequest="1" />
+                <StackLayout VerticalOptions="FillAndExpand"
+                             HorizontalOptions="FillAndExpand"
+                             Spacing="0">
+                    <Grid>
+                        <Image x:Name="imgRequest"
+                               Source="sky.jpg"
+                               Opacity="0.25"
+                               Aspect="Fill" />
+                        <Label Text="Request Prayer or a Visitation" 
+                               VerticalOptions="FillAndExpand" 
+                               HorizontalOptions="FillAndExpand"
+                               FontSize="30"
+                               HorizontalTextAlignment="Center"
+                               VerticalTextAlignment="Center"
+                               FontFamily="{StaticResource Font}" />
+                        <Button x:Name="btnRequest"
+                                Clicked="BtnRequest_Clicked"
+                                VerticalOptions="FillAndExpand"
+                                HorizontalOptions="FillAndExpand"
+                                Opacity="0"
+                                Pressed="BtnRequest_Pressed"
+                                Released="BtnRequest_Released" />
+                    </Grid>
+                    <BoxView Color="#000000" 
+                             HeightRequest="1" />
+                    <Grid>
+                        <Image x:Name="imgEvent"
+                               Source="trees.jpg"
+                               Opacity="0.25"
+                               Aspect="Fill" />
+                        <Label Text="RSVP To An Event" 
+                               VerticalOptions="FillAndExpand" 
+                               HorizontalOptions="FillAndExpand"
+                               FontSize="30"
+                               HorizontalTextAlignment="Center"
+                               VerticalTextAlignment="Center"
+                               FontFamily="{StaticResource Font}" />
+                        <Button x:Name="btnEvent"
+                                Clicked="BtnEvent_Clicked"
+                                VerticalOptions="FillAndExpand"
+                                HorizontalOptions="FillAndExpand"
+                                Opacity="0"
+                                Pressed="BtnEvent_Pressed"
+                                Released="BtnEvent_Released" />
+                    </Grid>
+                    <BoxView Color="#000000" 
+                             HeightRequest="1" />
                 </StackLayout>
+                <BoxView x:Name="RightBorder"
+                         Color="#000000" 
+                         WidthRequest="1"
+                         IsVisible="False"/>
+                <StackLayout VerticalOptions="FillAndExpand"
+                             HorizontalOptions="FillAndExpand"
+                             Spacing="0">
+                    <Grid>
+                        <Image x:Name="imgAnnouncement"
+                               Source="flowers.jpg"
+                               Opacity="0.25"
+                               Aspect="Fill" />
+                        <Label Text="Request an Announcement" 
+                               VerticalOptions="FillAndExpand" 
+                               HorizontalOptions="FillAndExpand"
+                               FontSize="30"
+                               HorizontalTextAlignment="Center"
+                               VerticalTextAlignment="Center" 
+                               FontFamily="{StaticResource Font}" />
+                        <Button x:Name="btnAnnouncement"
+                                Clicked="BtnAnnouncement_Clicked"
+                                VerticalOptions="FillAndExpand"
+                                HorizontalOptions="FillAndExpand"
+                                Opacity="0"
+                                Pressed="BtnAnnouncement_Pressed"
+                                Released="BtnAnnouncement_Released" />
+                    </Grid>
+                    <BoxView Color="#000000" 
+                             HeightRequest="1" />
+                    <Grid>
+                        <Image x:Name="imgRegister"
+                               Source="rocks.jpg"
+                               Opacity="0.25"
+                               Aspect="Fill" />
+                        <Label x:Name="lblLogout"
+                               Text="Logout" 
+                               VerticalOptions="FillAndExpand" 
+                               HorizontalOptions="FillAndExpand"
+                               FontSize="30"
+                               HorizontalTextAlignment="Center"
+                               VerticalTextAlignment="Center"
+                               FontFamily="{StaticResource Font}" />
+                        <Button x:Name="btnRegister"
+                                Clicked="BtnRegister_Clicked"
+                                VerticalOptions="FillAndExpand"
+                                HorizontalOptions="FillAndExpand"
+                                Opacity="0"
+                                Pressed="BtnRegister_Pressed"
+                                Released="BtnRegister_Released"/>
+                    </Grid>
+                    <BoxView Color="#000000" 
+                             HeightRequest="1" />
+                    </StackLayout>
+            </StackLayout>
         </StackLayout>
-    </StackLayout>
+    </ContentPage.Content>
 
 </ContentPage>

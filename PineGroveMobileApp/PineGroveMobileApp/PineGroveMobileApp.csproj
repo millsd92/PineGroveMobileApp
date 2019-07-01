@@ -12,7 +12,6 @@
 
   <ItemGroup>
     <PackageReference Include="Acr.UserDialogs" Version="7.0.4" />
-    <PackageReference Include="Microsoft.Net.Http" Version="2.2.29" />
     <PackageReference Include="Refit" Version="4.7.9" />
     <PackageReference Include="Xamarin.Forms" Version="4.0.0.497661" />
     <PackageReference Include="Xamarin.Essentials" Version="1.1.0" />

@@ -90,6 +90,13 @@
                         FontFamily="{StaticResource Font}"
                         FontSize="18"
                         Clicked="BtnRegister_Clicked" />
+                <Button x:Name="btnSkip"
+                        VerticalOptions="CenterAndExpand"
+                        HorizontalOptions="FillAndExpand"
+                        Text="Skip Login"
+                        FontFamily="{StaticResource Font}"
+                        FontSize="14"
+                        Clicked="BtnSkip_Clicked" />
             </Grid>
         </StackLayout>
     </ContentPage.Content>

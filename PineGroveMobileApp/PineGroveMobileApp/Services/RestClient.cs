@@ -11,7 +11,9 @@ namespace PineGroveMobileApp.Services
 
         public RestClient()
         {
-            _client = RestService.For<IRestable>("https://36vhnw37q6.execute-api.us-east-2.amazonaws.com/Prod");
+            
+            RefitSettings settings = new RefitSettings() { ContentSerializer = new JsonContentSerializer() };
+            _client = RestService.For<IRestable>("https://36vhnw37q6.execute-api.us-east-2.amazonaws.com/Prod", settings);
         }
 
         public async Task<User[]> GetUsers()
@@ -27,6 +29,16 @@ namespace PineGroveMobileApp.Services
         public async Task<User[]> GetUsersByName(string firstName, string lastName, CancellationToken token)
         {
             return await _client.GetUsersByName(firstName, lastName, token);
+        }
+
+        public async Task<AnnouncementRequest> CreateAnnouncement([Body] AnnouncementRequest announcement, CancellationToken token)
+        {
+            return await _client.CreateAnnouncement(announcement, token);
+        }
+
+        public async Task<AnnouncementRequest> GetAnnouncement(int announcementId)
+        {
+            return await _client.GetAnnouncement(announcementId);
         }
     }
 }

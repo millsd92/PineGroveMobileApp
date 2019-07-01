@@ -5,38 +5,64 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              x:Class="PineGroveMobileApp.AnnouncementPage">
+    <ContentPage.Resources>
+        <StyleSheet Source="Assets/globalstyles.css" />
+    </ContentPage.Resources>
+    
     <ContentPage.Content>
-        <ListView x:Name="listviewMain"
-                  Margin="20"
-                  HasUnevenRows="True">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <ViewCell>
-                        <StackLayout Margin="20,0,0,0"
-                                     HorizontalOptions="FillAndExpand">
-                            <Label Text="{Binding UserId}"
-                                   VerticalOptions="Center"
-                                   HorizontalOptions="FillAndExpand" />
-                            <Label Text="{Binding UserName}"
-                                   VerticalOptions="Center"
-                                   HorizontalOptions="FillAndExpand" />
-                            <Label Text="{Binding FirstName}"
-                                   VerticalOptions="Center"
-                                   HorizontalOptions="FillAndExpand" />
-                            <Label Text="{Binding LastName}"
-                                   VerticalOptions="Center"
-                                   HorizontalOptions="FillAndExpand" />
-                            <Label Text="{Binding EmailAddress}"
-                                   VerticalOptions="Center"
-                                   HorizontalOptions="FillAndExpand" />
-                            <Label Text="{Binding PhoneNumber}"
-                                   VerticalOptions="Center"
-                                   HorizontalOptions="FillAndExpand" />
-                            <ProgressBar x:Name="prgbarLoad" />
-                        </StackLayout>
-                    </ViewCell>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+        <StackLayout Spacing="0"
+                     VerticalOptions="FillAndExpand"
+                     HorizontalOptions="FillAndExpand"
+                     BackgroundColor="#333333">
+            <Image x:Name="imgIcon"
+                   Source="pinegrovebanner.png"
+                   Margin="15,5" 
+                   HeightRequest="75"
+                   IsOpaque="True" />
+            <BoxView Color="#000000" 
+                     HeightRequest="1" />
+            <StackLayout VerticalOptions="FillAndExpand"
+                         HorizontalOptions="FillAndExpand"
+                         BackgroundColor="#999999">
+                <Grid x:Name="grdAll"
+                      VerticalOptions="FillAndExpand"
+                      HorizontalOptions="FillAndExpand"
+                      Margin="25">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Entry x:Name="txtTitle"
+                           VerticalOptions="Start"
+                           HorizontalOptions="FillAndExpand"
+                           FontSize="30"
+                           HorizontalTextAlignment="Center"
+                           Placeholder="Announcement Title"
+                           FontFamily="{StaticResource Font}" />
+                    <Editor x:Name="txtDescription"
+                            VerticalOptions="FillAndExpand"
+                            HorizontalOptions="FillAndExpand"
+                            FontSize="18"
+                            Placeholder="Announcement Description"
+                            FontFamily="{StaticResource Font}" AutoSize="TextChanges" />
+                    <Button x:Name="btnClear"
+                            VerticalOptions="End"
+                            HorizontalOptions="FillAndExpand"
+                            Text="Clear"
+                            FontFamily="{StaticResource Font}"
+                            FontSize="18"
+                            Clicked="BtnClear_Clicked" />
+                    <Button x:Name="btnSubmit"
+                            VerticalOptions="End"
+                            HorizontalOptions="FillAndExpand"
+                            Text="Submit"
+                            FontFamily="{StaticResource Font}"
+                            FontSize="18"
+                            FontAttributes="Bold"
+                            Clicked="BtnSubmit_Clicked" />
+                </Grid>
+            </StackLayout>
+        </StackLayout>
     </ContentPage.Content>
 </ContentPage>
