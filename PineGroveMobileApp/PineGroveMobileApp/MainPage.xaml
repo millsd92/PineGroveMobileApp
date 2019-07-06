@@ -107,7 +107,7 @@
                                Opacity="0.25"
                                Aspect="Fill" />
                         <Label x:Name="lblLogout"
-                               Text="Logout" 
+                               Text="Edit User / Logout" 
                                VerticalOptions="FillAndExpand" 
                                HorizontalOptions="FillAndExpand"
                                FontSize="30"

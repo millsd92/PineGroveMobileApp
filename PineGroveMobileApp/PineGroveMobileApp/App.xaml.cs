@@ -12,9 +12,10 @@ namespace PineGroveMobileApp
         public App()
         {
             InitializeComponent();
-            client = new RestClient();
             if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
+                client = new RestClient();
+                _ = client.GetUser("none", new System.Threading.CancellationToken());   //Warm up the API to prevent harsh "cold start" time
                 if (Properties.ContainsKey("Username"))
                     MainPage = new MainPage(ref client);
                 else

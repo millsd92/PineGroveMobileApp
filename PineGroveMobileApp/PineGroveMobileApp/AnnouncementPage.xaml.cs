@@ -52,7 +52,7 @@ namespace PineGroveMobileApp
             {
                 try
                 {
-                    UserDialogs.Instance.Toast(new ToastConfig("Attempting to post announcement request...") { BackgroundColor = App.toastColor });
+                    UserDialogs.Instance.Toast(new ToastConfig("Attempting to post announcement request...") { BackgroundColor = App.toastColor, Duration = TimeSpan.FromMilliseconds(App.timeoutTime) });
                     CancellationTokenSource source = new CancellationTokenSource();
                     source.CancelAfter((int)App.timeoutTime);
                     User user = await client.GetUser(Application.Current.Properties["Username"].ToString(), source.Token);

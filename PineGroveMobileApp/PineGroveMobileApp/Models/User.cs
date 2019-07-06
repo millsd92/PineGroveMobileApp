@@ -26,6 +26,16 @@ namespace PineGroveMobileApp.Models
         public string EmailAddress { get; set; }
         [JsonProperty(PropertyName = "PhoneNumber")]
         public long? PhoneNumber { get; set; }
+        [JsonProperty(PropertyName = "AddressLineOne")]
+        public string AddressLineOne { get; set; }
+        [JsonProperty(PropertyName = "AddressLineTwo")]
+        public string AddressLineTwo { get; set; }
+        [JsonProperty(PropertyName = "ZipCode")]
+        public string ZipCode { get; set; }
+        [JsonProperty(PropertyName = "City")]
+        public string City { get; set; }
+        [JsonProperty(PropertyName = "State")]
+        public string State { get; set; }
 
         public virtual ICollection<AnnouncementRequest> AnnouncementRequest { get; set; }
         public virtual ICollection<Attendance> Attendance { get; set; }

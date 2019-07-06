@@ -40,5 +40,30 @@ namespace PineGroveMobileApp.Services
         {
             return await _client.GetAnnouncement(announcementId);
         }
+
+        public async Task<Event[]> GetEvents()
+        {
+            return await _client.GetEvents();
+        }
+
+        public async Task<EventRegistration> CreateRegistration([Body] EventRegistration registration, CancellationToken token)
+        {
+            return await _client.CreateRegistration(registration, token);
+        }
+
+        public async Task<Event> UpdateEvent(int eventId, [Body] Event @event, CancellationToken token)
+        {
+            return await _client.UpdateEvent(eventId, @event, token);
+        }
+
+        public async Task<User> CreateUser([Body] User user, CancellationToken token)
+        {
+            return await _client.CreateUser(user, token);
+        }
+
+        public async Task<User> UpdateUser(int userId, [Body] User user, CancellationToken token)
+        {
+            return await _client.UpdateUser(userId, user, token);
+        }
     }
 }

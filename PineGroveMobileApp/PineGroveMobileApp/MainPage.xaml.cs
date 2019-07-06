@@ -45,16 +45,32 @@ namespace PineGroveMobileApp
         private async void BtnAnnouncement_Clicked(object sender, EventArgs e)
         { await Navigation.PushModalAsync(new AnnouncementPage(ref client)); }
 
-        private void BtnEvent_Clicked(object sender, EventArgs e)
-        {
+        private async void BtnEvent_Clicked(object sender, EventArgs e)
+        { await Navigation.PushModalAsync(new LoadingPage(ref client)); }
 
-        }
-
-        private void BtnRegister_Clicked(object sender, EventArgs e)
+        private async void BtnRegister_Clicked(object sender, EventArgs e)
         {
-            if (Application.Current.Properties.Remove("Username"))
-                UserDialogs.Instance.Toast(new ToastConfig("Successfully logged out!") { BackgroundColor = App.toastColor });
-            Application.Current.MainPage = new LoginPage(ref client);
+            if (await UserDialogs.Instance.ConfirmAsync(new ConfirmConfig()
+            {
+                Title = "Option Selection",
+                Message = "Please, choose an option below:",
+                OkText = "Logout",
+                CancelText = "Edit Current User"
+            }))
+            {
+                if (Application.Current.Properties.Remove("Username"))
+                    UserDialogs.Instance.Toast(new ToastConfig("Successfully logged out!") { BackgroundColor = App.toastColor });
+                Application.Current.MainPage = new LoginPage(ref client);
+            }
+            else
+            {
+                System.Threading.CancellationTokenSource source = new System.Threading.CancellationTokenSource();
+                source.CancelAfter((int)App.timeoutTime);
+                UserDialogs.Instance.Toast(new ToastConfig("Loading user details... Please wait.") { BackgroundColor = App.toastColor, Duration = TimeSpan.FromMilliseconds(App.timeoutTime) });
+                Models.User currentUser = await client.GetUser(Application.Current.Properties["Username"].ToString(), source.Token);
+                UserDialogs.Instance.Toast(new ToastConfig("User details successfully loaded!") { BackgroundColor = App.toastColor });
+                await Navigation.PushModalAsync(new RegistrationPage(ref client, currentUser));
+            }
         }
 
         private void BtnRequest_Clicked(object sender, EventArgs e)

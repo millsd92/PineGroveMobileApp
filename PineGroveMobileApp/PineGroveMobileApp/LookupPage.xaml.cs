@@ -6,6 +6,7 @@ using PineGroveMobileApp.Services;
 using Acr.UserDialogs;
 using System.Threading;
 using System.Text.RegularExpressions;
+using System.Collections.Generic;
 
 namespace PineGroveMobileApp
 {
@@ -15,6 +16,8 @@ namespace PineGroveMobileApp
         private double width = 0, height = 0;
         private RestClient client;
         private Models.User user;
+        private bool oneUser = false;
+        private bool searching = true;
         public LookupPage(ref RestClient client)
         {
             this.client = client;
@@ -33,6 +36,7 @@ namespace PineGroveMobileApp
             lblEmail.Text = "N/A";
             lblPhone.Text = "N/A";
             lblUsername.Text = "N/A";
+            searching = true;
         }
 
         protected override void OnSizeAllocated(double width, double height)
@@ -104,80 +108,114 @@ namespace PineGroveMobileApp
 
         private async void BtnSearch_Clicked(object sender, EventArgs e)
         {
-            ToastConfig config = new ToastConfig("") { BackgroundColor = App.toastColor };
-            string lastName = "", firstName = "";
-            if (txtFirstName.Text == null && txtLastName.Text == null)
+            if (searching)
             {
-                config.Message = "Error! No text was entered for either the first or last name!";
-                UserDialogs.Instance.Toast(config);
-            }
-            else
-            {
-                config.Message = "Searching...";
-                config.Duration = TimeSpan.FromMilliseconds(App.timeoutTime);
-                UserDialogs.Instance.Toast(config);
-                if (txtLastName.Text != null)
-                    lastName = txtLastName.Text.TrimEnd();
-                if (txtFirstName.Text != null)
-                    firstName = txtFirstName.Text.TrimEnd();
-                if (lastName.Length == 0 && firstName.Length == 0)
-                    UserDialogs.Instance.Toast(new ToastConfig("Error! No text was entered for either first or last name!") { BackgroundColor = App.toastColor });
+                ToastConfig config = new ToastConfig("") { BackgroundColor = App.toastColor };
+                string lastName = "", firstName = "";
+                if (txtFirstName.Text == null || txtLastName.Text == null)
+                {
+                    config.Message = "Error! No text was entered for either first or last name!";
+                    UserDialogs.Instance.Toast(config);
+                }
                 else
                 {
-                    try
+                    config.Message = "Searching...";
+                    config.Duration = TimeSpan.FromMilliseconds(App.timeoutTime);
+                    UserDialogs.Instance.Toast(config);
+                    if (txtLastName.Text != null)
+                        lastName = txtLastName.Text.TrimEnd();
+                    if (txtFirstName.Text != null)
+                        firstName = txtFirstName.Text.TrimEnd();
+                    if (lastName.Length == 0 || firstName.Length == 0)
+                        UserDialogs.Instance.Toast(new ToastConfig("Error! No text was entered for either first or last name!") { BackgroundColor = App.toastColor });
+                    else
                     {
-                        CancellationTokenSource tokenSource = new CancellationTokenSource();
-                        tokenSource.CancelAfter((int)App.timeoutTime);
-                        Models.User[] users = await client.GetUsersByName(firstName, lastName, tokenSource.Token);
-                        if (users.Length == 1)
+                        try
                         {
-                            config.Message = "Only one user found!";
+                            CancellationTokenSource tokenSource = new CancellationTokenSource();
+                            tokenSource.CancelAfter((int)App.timeoutTime);
+                            Models.User[] users = await client.GetUsersByName(firstName, lastName, tokenSource.Token);
+                            if (users.Length == 1)
+                            {
+                                config.Message = "Only one user found!";
+                                config.Duration = TimeSpan.FromSeconds(2);  //Default duration.
+                                UserDialogs.Instance.Toast(config);
+                                user = users[0];
+                                DisplayUser(user);
+                                oneUser = true;
+                            }
+                            else
+                            {
+                                List<string> userNames = new List<string>();
+                                foreach (Models.User user in users)
+                                    userNames.Add(user.UserName);
+                                config.Message = "Multiple users found!";
+                                config.Duration = TimeSpan.FromSeconds(2);  //Defualt duration.
+                                UserDialogs.Instance.Toast(config);
+                                string result = await UserDialogs.Instance.ActionSheetAsync("Please select a user:", "Cancel", null, null, userNames.ToArray());
+                                if (!result.Equals("Cancel"))
+                                {
+                                    user = users[userNames.IndexOf(result)];
+                                    DisplayUser(user);
+                                }
+                                else
+                                    return;
+                            }
+                            btnSearch.Text = "That's Not Me!";
+                            searching = false;
+                        }
+                        catch (Refit.ValidationApiException)
+                        {
+                            config.Message = "Error! No users found!";
                             config.Duration = TimeSpan.FromSeconds(2);
                             UserDialogs.Instance.Toast(config);
-                            user = users[0];
-                            if (user.EmailAddress == null)
-                                lblEmail.Text = "Not provided";
-                            else
-                            {
-                                string pattern = @"(?<=[\w]{1})[\w-\._\+%]*(?=[\w]{2}@)";
-                                lblEmail.Text = Regex.Replace(user.EmailAddress, pattern, m => new string('*', m.Length));
-                            }
-                            if (user.PhoneNumber == null)
-                                lblPhone.Text = "Not provided";
-                            else
-                            {
-                                lblPhone.Text = "(XXX) XXX-" + (user.PhoneNumber % 10000).ToString();
-                            }
-                            lblUsername.Text = user.UserName;
                         }
-                        else
+                        catch (Refit.ApiException)
                         {
-                            //TODO: Handle if more than one user
+                            config.Message = "Error! No users found!";
+                            config.Duration = TimeSpan.FromSeconds(2);
+                            UserDialogs.Instance.Toast(config);
                         }
-                        btnSearch.Text = "That's Not Me!";
-                    }
-                    catch (Refit.ValidationApiException)
-                    {
-                        config.Message = "Error! No users found!";
-                        config.Duration = TimeSpan.FromSeconds(2);
-                        UserDialogs.Instance.Toast(config);
-                    }
-                    catch (Refit.ApiException)
-                    {
-                        config.Message = "Error! No users found!";
-                        config.Duration = TimeSpan.FromSeconds(2);
-                        UserDialogs.Instance.Toast(config);
-                    }
-                    catch (System.Net.Http.HttpRequestException)
-                    {
-                        Timer_Elapsed("Access denied! Connection blocked.\nWould you like to browse offline?");
-                    }
-                    catch (TaskCanceledException)
-                    {
-                        Timer_Elapsed("Request timeout...\nWould you like to browse offline?");
+                        catch (System.Net.Http.HttpRequestException)
+                        {
+                            Timer_Elapsed("Access denied! Connection blocked.\nWould you like to browse offline?");
+                        }
+                        catch (TaskCanceledException)
+                        {
+                            Timer_Elapsed("Request timeout...\nWould you like to browse offline?");
+                        }
                     }
                 }
             }
+            else if (oneUser)
+            {
+                if (await UserDialogs.Instance.ConfirmAsync(new ConfirmConfig()
+                {
+                    Title = "Only One User Found",
+                    Message = "Would you like to create a new user?",
+                    OkText = "Yes",
+                    CancelText = "No"
+                }))
+                    await Navigation.PushModalAsync(new RegistrationPage(ref client));
+            }
+            else
+            {
+                searching = true;
+                BtnSearch_Clicked(sender, e);
+            }
+        }
+
+        private void DisplayUser(Models.User user)
+        {
+            lblUsername.Text = user.UserName;
+            if (user.EmailAddress == null)
+                lblEmail.Text = "Not provided";
+            else
+                lblEmail.Text = Regex.Replace(user.EmailAddress, @"(?<=[\w]{1})[\w-\._\+%]*(?=[\w]{2}@)", m => new string('*', m.Length));
+            if (user.PhoneNumber == null)
+                lblPhone.Text = "Not provided";
+            else
+                lblPhone.Text = "(XXX) XXX-" + (user.PhoneNumber % 10000).ToString();
         }
 
         private async void BtnLogin_Clicked(object sender, EventArgs e)

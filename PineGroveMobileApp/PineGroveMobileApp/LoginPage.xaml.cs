@@ -132,9 +132,7 @@ namespace PineGroveMobileApp
 
         private void BtnSkip_Clicked(object sender, EventArgs e) { Application.Current.MainPage = new MainPage(ref client); }
 
-        private void BtnRegister_Clicked(object sender, EventArgs e)
-        {
-
-        }
+        private async void BtnRegister_Clicked(object sender, EventArgs e)
+        { await Navigation.PushModalAsync(new RegistrationPage(ref client)); }
     }
 }

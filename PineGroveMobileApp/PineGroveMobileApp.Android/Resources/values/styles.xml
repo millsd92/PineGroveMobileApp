@@ -28,4 +28,11 @@
   <style name="AppCompatDialogStyle" parent="Theme.AppCompat.Light.Dialog">
     <item name="colorAccent">#FF4081</item>
   </style>
+
+  <style name="Splash" parent="Theme.AppCompat.Light.DarkActionBar">
+    <item name="android:windowBackground">@drawable/Splash</item>
+    <item name="android:colorBackground">@color/primary</item>
+    <item name="android:windowNoTitle">true</item>
+    <item name="windowActionModeOverlay">true</item>
+  </style>
 </resources>

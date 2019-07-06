@@ -1,0 +1,154 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<CarouselPage xmlns="http://xamarin.com/schemas/2014/forms"
+              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+              xmlns:local="clr-namespace:PineGroveMobileApp"
+              mc:Ignorable="d"
+              x:Class="PineGroveMobileApp.EventsCarouselPage">
+    <CarouselPage.ItemTemplate>
+        <DataTemplate>
+            <ContentPage x:Name="pgData">
+                <ContentPage.Resources>
+                    <StyleSheet Source="Assets/globalstyles.css" />
+                    <ResourceDictionary>
+                        <local:ByteToImageConverter x:Key="ByteToImage" />
+                    </ResourceDictionary>
+                </ContentPage.Resources>
+                <ContentPage.Content>
+                    <StackLayout Spacing="0"
+                                 VerticalOptions="FillAndExpand"
+                                 HorizontalOptions="FillAndExpand"
+                                 BackgroundColor="#333333">
+                        <Image x:Name="imgLogo" 
+                               Source="pinegrovebanner.png"
+                               Margin="15,5" 
+                               HeightRequest="75"
+                               IsOpaque="True" />
+                        <BoxView Color="#000000" 
+                                 HeightRequest="1" />
+                        <ScrollView Orientation="Vertical"
+                                    BackgroundColor="#999999"
+                                    VerticalOptions="FillAndExpand"
+                                    HorizontalOptions="FillAndExpand">
+                            <StackLayout VerticalOptions="FillAndExpand"
+                                         HorizontalOptions="FillAndExpand"
+                                         Spacing="0"
+                                         BackgroundColor="#999999">
+                                <Grid x:Name="grdAll"
+                                      Margin="25"
+                                      VerticalOptions="FillAndExpand"
+                                      HorizontalOptions="FillAndExpand">
+                                    <Image x:Name="imgEvent"
+                                           Source="{Binding Picture, Converter={StaticResource ByteToImage}}"
+                                           Aspect="AspectFit"
+                                           HeightRequest="75" />
+                                    <Label x:Name="lblSwipe"
+                                           Text="Swipe left and right to view other events!"
+                                           FontFamily="{StaticResource Font}"
+                                           FontSize="12"
+                                           HorizontalOptions="CenterAndExpand"
+                                           HorizontalTextAlignment="Center" />
+                                    <Label x:Name="lblTitle"
+                                           Text="{Binding EventTitle}"
+                                           FontFamily="{StaticResource Font}"
+                                           FontSize="30"
+                                           HorizontalOptions="CenterAndExpand"
+                                           HorizontalTextAlignment="Center"/>
+                                    <Label x:Name="lblDescription"
+                                           Text="{Binding EventDescription}"
+                                           HorizontalOptions="CenterAndExpand"
+                                           VerticalOptions="FillAndExpand"
+                                           FontFamily="{StaticResource Font}"
+                                           FontSize="18" />
+                                    <Label x:Name="lblDate"
+                                           Text="Event Date and Time"
+                                           HorizontalOptions="CenterAndExpand"
+                                           FontSize="18"
+                                           HorizontalTextAlignment="Center"
+                                           FontFamily="{StaticResource Font}" />
+                                    <Label x:Name="lblStart"
+                                           Text="From"
+                                           HorizontalTextAlignment="Center"
+                                           HorizontalOptions="CenterAndExpand"
+                                           FontSize="14"
+                                           FontFamily="{StaticResource Font}" />
+                                    <Label x:Name="lblStartTime"
+                                           Text="{Binding StartTime}"
+                                           FontSize="14" 
+                                           HorizontalTextAlignment="Center"
+                                           HorizontalOptions="CenterAndExpand"
+                                           FontFamily="{StaticResource Font}" />
+                                    <Label x:Name="lblEnd"
+                                           Text="Until"
+                                           HorizontalOptions="CenterAndExpand"
+                                           FontSize="14"
+                                           HorizontalTextAlignment="Center"
+                                           FontFamily="{StaticResource Font}" />
+                                    <Label x:Name="lblEndTime"
+                                           Text="{Binding EndTime}"
+                                           FontSize="14"
+                                           HorizontalTextAlignment="Center"
+                                           HorizontalOptions="CenterAndExpand"
+                                           FontFamily="{StaticResource Font}" />
+                                    <Label x:Name="lblAddress"
+                                           Text="Address Information"
+                                           HorizontalOptions="CenterAndExpand"
+                                           FontSize="18"
+                                           HorizontalTextAlignment="Center"
+                                           FontFamily="{StaticResource Font}" />
+                                    <Label x:Name="lblAddressInfo"
+                                           Text="{Binding Address}"
+                                           FontFamily="{StaticResource Font}"
+                                           HorizontalTextAlignment="Center"
+                                           HorizontalOptions="CenterAndExpand"
+                                           VerticalOptions="CenterAndExpand"
+                                           FontSize="14" />
+                                    <Button x:Name="btnRegister"
+                                            Text="RSVP"
+                                            VerticalOptions="End"
+                                            HorizontalOptions="FillAndExpand"
+                                            FontFamily="{StaticResource Font}"
+                                            FontSize="18"
+                                            Clicked="BtnRegister_Clicked" />
+                                    <Label x:Name="lblGuests"
+                                           Text="How many guests do you plan to bring?"
+                                           FontFamily="{StaticResource Font}"
+                                           HorizontalTextAlignment="Center"
+                                           HorizontalOptions="CenterAndExpand"
+                                           VerticalOptions="CenterAndExpand"
+                                           FontSize="14"
+                                           IsVisible="False" />
+                                    <Stepper x:Name="stpGuests"
+                                             Maximum="10"
+                                             Minimum="0"
+                                             Value="0"
+                                             Increment="1"
+                                             BackgroundColor="#CCCCCC"
+                                             HorizontalOptions="FillAndExpand"
+                                             VerticalOptions="CenterAndExpand"
+                                             IsVisible="False"
+                                             ValueChanged="StpGuests_ValueChanged" />
+                                    <Label x:Name="lblMaximum"
+                                           FontFamily="{StaticResource Font}"
+                                           HorizontalTextAlignment="Center"
+                                           HorizontalOptions="CenterAndExpand"
+                                           VerticalOptions="CenterAndExpand"
+                                           FontSize="14"
+                                           IsVisible="False" />
+                                    <Label x:Name="txtStepper"
+                                           FontFamily="{StaticResource Font}"
+                                           HorizontalTextAlignment="Center"
+                                           HorizontalOptions="FillAndExpand"
+                                           VerticalOptions="CenterAndExpand"
+                                           FontSize="14"
+                                           IsVisible="False" />
+                                </Grid>
+                            </StackLayout>
+                        </ScrollView>
+                    </StackLayout>
+                </ContentPage.Content>
+            </ContentPage>
+        </DataTemplate>
+    </CarouselPage.ItemTemplate>
+</CarouselPage>

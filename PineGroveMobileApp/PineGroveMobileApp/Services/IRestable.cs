@@ -21,5 +21,20 @@ namespace PineGroveMobileApp.Services
 
         [Get("/api/AnnouncementRequests/{announcementId}")]
         Task<AnnouncementRequest> GetAnnouncement(int announcementId);
+
+        [Get("/api/Events")]
+        Task<Event[]> GetEvents();
+
+        [Post("/api/eventregistrations")]
+        Task<EventRegistration> CreateRegistration([Body] EventRegistration registration, CancellationToken token);
+
+        [Put("/api/Events/{eventId}")]
+        Task<Event> UpdateEvent(int eventId, [Body] Event @event, CancellationToken token);
+
+        [Post("/api/users")]
+        Task<User> CreateUser([Body] User user, CancellationToken token);
+
+        [Put("/api/users/{userId}")]
+        Task<User> UpdateUser(int userId, [Body] User user, CancellationToken token);
     }
 }
