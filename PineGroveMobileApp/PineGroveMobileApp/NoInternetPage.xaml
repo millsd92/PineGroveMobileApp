@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="PineGroveMobileApp.NoInternetPage">
+    <ContentPage.Resources>
+        <StyleSheet Source="Assets/globalstyles.css" />
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <StackLayout Spacing="0"
+                     VerticalOptions="Fill"
+                     HorizontalOptions="Fill"
+                     BackgroundColor="#333333">
+            <Image x:Name="imgLogo"
+                   Source="pinegrovebanner.png"
+                   Margin="15,5" 
+                   HeightRequest="75"
+                   IsOpaque="True" />
+            <BoxView Color="#000000" 
+                     HeightRequest="1" />
+            <StackLayout VerticalOptions="FillAndExpand"
+                         HorizontalOptions="FillAndExpand"
+                         BackgroundColor="#999999">
+                <Label Text="Error!"
+                       FontSize="56"
+                       FontFamily="{StaticResource Font}"
+                       HorizontalOptions="CenterAndExpand"
+                       VerticalOptions="CenterAndExpand"
+                       HorizontalTextAlignment="Center" />
+                <Label Text="It appears you have no internet connection."
+                       FontSize="30"
+                       FontFamily="{StaticResource Font}"
+                       HorizontalOptions="CenterAndExpand"
+                       VerticalOptions="CenterAndExpand"
+                       HorizontalTextAlignment="Center" />
+                <Label Text="This application requires internet access to work. Please check your internet settings and restart this application."
+                       FontSize="18"
+                       FontFamily="{StaticResource Font}"
+                       HorizontalOptions="CenterAndExpand"
+                       VerticalOptions="CenterAndExpand"
+                       HorizontalTextAlignment="Center" />
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

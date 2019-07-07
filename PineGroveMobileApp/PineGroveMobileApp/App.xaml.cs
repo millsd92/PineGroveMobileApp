@@ -23,7 +23,7 @@ namespace PineGroveMobileApp
             }
             else
             {
-                //TODO: Handle when the user has no internet
+                MainPage = new NoInternetPage();
             }
         }
 
