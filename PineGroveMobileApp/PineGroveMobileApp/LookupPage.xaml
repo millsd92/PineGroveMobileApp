@@ -34,7 +34,7 @@
                        HorizontalTextAlignment="Center"
                        FontFamily="{StaticResource Font}" />
                 <Label x:Name="lblLookupPrompt"
-                       Text="Enter your first and/or last name below."
+                       Text="Enter your first and last name below."
                        VerticalOptions="FillAndExpand"
                        HorizontalOptions="CenterAndExpand"
                        FontSize="18"

@@ -166,15 +166,27 @@ namespace PineGroveMobileApp
                         }
                         catch (Refit.ValidationApiException)
                         {
-                            config.Message = "Error! No users found!";
-                            config.Duration = TimeSpan.FromSeconds(2);
-                            UserDialogs.Instance.Toast(config);
+                            UserDialogs.Instance.Toast(new ToastConfig("") { Duration = TimeSpan.FromMilliseconds(1) });
+                            if (await UserDialogs.Instance.ConfirmAsync(new ConfirmConfig()
+                            {
+                                Title = "No Users Found",
+                                Message = "Would you like to create a new user?",
+                                OkText = "Yes",
+                                CancelText = "No"
+                            }))
+                                await Navigation.PushModalAsync(new RegistrationPage(ref client, txtFirstName.Text, txtLastName.Text));
                         }
                         catch (Refit.ApiException)
                         {
-                            config.Message = "Error! No users found!";
-                            config.Duration = TimeSpan.FromSeconds(2);
-                            UserDialogs.Instance.Toast(config);
+                            UserDialogs.Instance.Toast(new ToastConfig("") { Duration = TimeSpan.FromMilliseconds(1) });
+                            if (await UserDialogs.Instance.ConfirmAsync(new ConfirmConfig()
+                            {
+                                Title = "No Users Found",
+                                Message = "Would you like to create a new user?",
+                                OkText = "Yes",
+                                CancelText = "No"
+                            }))
+                                await Navigation.PushModalAsync(new RegistrationPage(ref client, txtFirstName.Text, txtLastName.Text));
                         }
                         catch (System.Net.Http.HttpRequestException)
                         {

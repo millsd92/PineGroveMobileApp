@@ -19,9 +19,6 @@ namespace PineGroveMobileApp.Services
         [Post("/api/announcementrequests")]
         Task<AnnouncementRequest> CreateAnnouncement([Body] AnnouncementRequest announcement, CancellationToken token);
 
-        [Get("/api/AnnouncementRequests/{announcementId}")]
-        Task<AnnouncementRequest> GetAnnouncement(int announcementId);
-
         [Get("/api/Events")]
         Task<Event[]> GetEvents();
 
@@ -36,5 +33,11 @@ namespace PineGroveMobileApp.Services
 
         [Put("/api/users/{userId}")]
         Task<User> UpdateUser(int userId, [Body] User user, CancellationToken token);
+
+        [Post("/api/prayerrequests")]
+        Task<PrayerRequest> CreatePrayerRequest([Body] PrayerRequest prayerRequest, CancellationToken token);
+
+        [Post("/api/visitrequests")]
+        Task<VisitRequest> CreateVisitRequest([Body] VisitRequest visitRequest, CancellationToken token);
     }
 }

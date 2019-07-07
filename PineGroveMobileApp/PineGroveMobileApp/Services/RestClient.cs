@@ -36,11 +36,6 @@ namespace PineGroveMobileApp.Services
             return await _client.CreateAnnouncement(announcement, token);
         }
 
-        public async Task<AnnouncementRequest> GetAnnouncement(int announcementId)
-        {
-            return await _client.GetAnnouncement(announcementId);
-        }
-
         public async Task<Event[]> GetEvents()
         {
             return await _client.GetEvents();
@@ -64,6 +59,16 @@ namespace PineGroveMobileApp.Services
         public async Task<User> UpdateUser(int userId, [Body] User user, CancellationToken token)
         {
             return await _client.UpdateUser(userId, user, token);
+        }
+
+        public async Task<PrayerRequest> CreatePrayerRequest([Body] PrayerRequest prayerRequest, CancellationToken token)
+        {
+            return await _client.CreatePrayerRequest(prayerRequest, token);
+        }
+
+        public async Task<VisitRequest> CreateVisitRequest([Body] VisitRequest visitRequest, CancellationToken token)
+        {
+            return await _client.CreateVisitRequest(visitRequest, token);
         }
     }
 }

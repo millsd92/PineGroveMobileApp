@@ -112,7 +112,7 @@
                                             FontSize="18"
                                             Clicked="BtnRegister_Clicked" />
                                     <Label x:Name="lblGuests"
-                                           Text="How many guests do you plan to bring?"
+                                           Text="How many guests?"
                                            FontFamily="{StaticResource Font}"
                                            HorizontalTextAlignment="Center"
                                            HorizontalOptions="CenterAndExpand"
@@ -128,7 +128,8 @@
                                              HorizontalOptions="FillAndExpand"
                                              VerticalOptions="CenterAndExpand"
                                              IsVisible="False"
-                                             ValueChanged="StpGuests_ValueChanged" />
+                                             ValueChanged="StpGuests_ValueChanged"
+                                             Scale="0.5" />
                                     <Label x:Name="lblMaximum"
                                            FontFamily="{StaticResource Font}"
                                            HorizontalTextAlignment="Center"
@@ -143,6 +144,25 @@
                                            VerticalOptions="CenterAndExpand"
                                            FontSize="14"
                                            IsVisible="False" />
+                                    <Grid x:Name="grdVolunteer"
+                                          HorizontalOptions="CenterAndExpand"
+                                          VerticalOptions="CenterAndExpand">
+                                        <CheckBox x:Name="chkVolunteer"
+                                                  HorizontalOptions="End"
+                                                  VerticalOptions="Center"
+                                                  Color="#333333"
+                                                  IsChecked="False"
+                                                  CheckedChanged="ChkVolunteer_CheckedChanged"
+                                                  IsVisible="False"/>
+                                        <Label x:Name="lblVolunteer"
+                                               HorizontalOptions="Start"
+                                               VerticalOptions="Center"
+                                               HorizontalTextAlignment="Start"
+                                               FontSize="14"
+                                               IsVisible="False"
+                                               Text="Volunteering?"
+                                               FontFamily="{StaticResource Font}" />
+                                    </Grid>
                                 </Grid>
                             </StackLayout>
                         </ScrollView>

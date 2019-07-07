@@ -37,7 +37,7 @@
                     <Label x:Name="lblPrompt"
                            VerticalOptions="Start"
                            HorizontalOptions="FillAndExpand"
-                           Text="* Indicates Required Field"
+                           Text="* First and Last Name Required *"
                            HorizontalTextAlignment="Center"
                            FontSize="16"
                            FontFamily="{StaticResource Font}"

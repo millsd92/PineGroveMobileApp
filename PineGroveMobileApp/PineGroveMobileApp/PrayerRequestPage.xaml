@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="PineGroveMobileApp.PrayerRequestPage">
+    <ContentPage.Resources>
+        <StyleSheet Source="Assets/globalstyles.css" />
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <StackLayout VerticalOptions="FillAndExpand"
+                     HorizontalOptions="FillAndExpand"
+                     BackgroundColor="#333333"
+                     Spacing="0">
+            <Image x:Name="imgLogo"
+                   Source="pinegrovebanner.png"
+                   Margin="15,5" 
+                   HeightRequest="75"
+                   IsOpaque="True" />
+            <BoxView Color="#000000" 
+                     HeightRequest="1" />
+            <Grid x:Name="grdAll"
+                  VerticalOptions="FillAndExpand"
+                  HorizontalOptions="FillAndExpand"
+                  BackgroundColor="#999999"
+                  Padding="25">
+                <Label x:Name="lblTitle"
+                       VerticalOptions="Start"
+                       HorizontalOptions="CenterAndExpand"
+                       FontFamily="{StaticResource Font}"
+                       Text="Prayer Request Form"
+                       HorizontalTextAlignment="Center"
+                       FontSize="30"/>
+                <Editor x:Name="txtDescription"
+                        VerticalOptions="FillAndExpand"
+                        HorizontalOptions="FillAndExpand"
+                        Placeholder="Prayer Request"
+                        BackgroundColor="#CCCCCC"
+                        FontFamily="{StaticResource Font}"
+                        FontSize="18"
+                        TextColor="#000000"
+                        Keyboard="Text" />
+                <Label x:Name="lblAnonymous"
+                       VerticalOptions="CenterAndExpand"
+                       HorizontalOptions="Start"
+                       FontFamily="{StaticResource Font}"
+                       FontSize="18"
+                       HorizontalTextAlignment="Start"
+                       Text="Anonymous Request" />
+                <CheckBox x:Name="chkAnonymous"
+                          IsChecked="False"
+                          HorizontalOptions="End"
+                          VerticalOptions="CenterAndExpand"
+                          Color="#333333" />
+                <Button x:Name="btnSubmit"
+                        HorizontalOptions="FillAndExpand"
+                        VerticalOptions="CenterAndExpand"
+                        FontFamily="{StaticResource Font}"
+                        FontSize="18"
+                        Text="Submit"
+                        Clicked="Submit_Clicked" />
+            </Grid>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

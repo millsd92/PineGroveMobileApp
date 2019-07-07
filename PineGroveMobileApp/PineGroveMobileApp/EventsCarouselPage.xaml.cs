@@ -7,6 +7,7 @@ using System.Globalization;
 using System.IO;
 using System.Threading;
 using Acr.UserDialogs;
+using System.Collections.Generic;
 
 namespace PineGroveMobileApp
 {
@@ -15,7 +16,7 @@ namespace PineGroveMobileApp
     {
         private readonly RestClient client;
         public event EventHandler OnLoad;
-        private Models.Event[] events;
+        private List<Models.Event> events;
 
         public EventsCarouselPage(ref RestClient client)
         {
@@ -26,7 +27,8 @@ namespace PineGroveMobileApp
 
         private async void MakePages()
         {
-            events = await client.GetEvents();
+            events = new List<Models.Event>(await client.GetEvents());
+            events.RemoveAll(e => e.EndTime < DateTime.Now);
             ItemsSource = events;
             foreach (ContentPage page in Children)
             {
@@ -55,6 +57,7 @@ namespace PineGroveMobileApp
         private void SetupPage(ContentPage page, int index)
         {
             Grid grid = page.FindByName("grdAll") as Grid;
+            Grid volunteer = page.FindByName("grdVolunteer") as Grid;
             Image imgEvent = page.FindByName("imgEvent") as Image;
             Label lblSwipe = page.FindByName("lblSwipe") as Label;
             Label lblTitle = page.FindByName("lblTitle") as Label;
@@ -62,10 +65,13 @@ namespace PineGroveMobileApp
             Label lblDate = page.FindByName("lblDate") as Label;
             Label lblStart = page.FindByName("lblStart") as Label;
             Label lblStartTime = page.FindByName("lblStartTime") as Label;
+            lblStartTime.Text = string.Format("{0:g}", Convert.ToDateTime(lblStartTime.Text));
             Label lblEnd = page.FindByName("lblEnd") as Label;
             Label lblEndTime = page.FindByName("lblEndTime") as Label;
                 if (lblEndTime.Text == null || lblEnd.Text.Length < 1)
                     lblEndTime.Text = "Whenever it ends!";
+                else
+                    lblEndTime.Text = string.Format("{0:g}", Convert.ToDateTime(lblEndTime.Text));
             Label lblAddress = page.FindByName("lblAddress") as Label;
             Label lblAddressInfo = page.FindByName("lblAddressInfo") as Label;
                 lblAddressInfo.Text = lblAddressInfo.Text.Replace("\n", "\n\n");
@@ -95,10 +101,18 @@ namespace PineGroveMobileApp
                     lblMaximum.Text = "Maximum is " + ((int)stpGuests.Maximum).ToString();
             Label txtStepper = page.FindByName("txtStepper") as Label;
                 txtStepper.Text = "Current value: " + ((int)stpGuests.Minimum).ToString();
+            CheckBox chkVolunteer = page.FindByName("chkVolunteer") as CheckBox;
+            Label lblVolunteer = page.FindByName("lblVolunteer") as Label;
 
             (page.FindByName("imgLogo") as Image).HeightRequest = 75;
             imgEvent.HeightRequest = 75;
 
+            volunteer.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Auto) });
+            volunteer.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
+
+            volunteer.Children.Add(chkVolunteer, 0, 0);
+            volunteer.Children.Add(lblVolunteer, 1, 0);
+
             grid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Auto) });
             grid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Auto) });
             grid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Auto) });
@@ -106,6 +120,8 @@ namespace PineGroveMobileApp
             grid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Auto) });
             grid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Auto) });
             grid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Auto) });
+            grid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Auto) });
+            grid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
             grid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Auto) });
             grid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Auto) });
             grid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Auto) });
@@ -128,12 +144,15 @@ namespace PineGroveMobileApp
             grid.Children.Add(lblEndTime, 0, 8);
             grid.Children.Add(lblAddressInfo, 1, 5);
             Grid.SetRowSpan(lblAddressInfo, 4);
-            grid.Children.Add(lblGuests, 0, 9);
-            grid.Children.Add(txtStepper, 1, 9);
-            grid.Children.Add(lblMaximum, 0, 10);
-            grid.Children.Add(stpGuests, 1, 10);
-            grid.Children.Add(btnRegister, 0, 11);
+            grid.Children.Add(lblGuests, 0, 10);
+            grid.Children.Add(txtStepper, 1, 10);
+            grid.Children.Add(lblMaximum, 0, 11);
+            grid.Children.Add(stpGuests, 1, 11);
+            grid.Children.Add(volunteer, 0, 12);
+            Grid.SetColumnSpan(volunteer, 2);
+            grid.Children.Add(btnRegister, 0, 13);
             Grid.SetColumnSpan(btnRegister, 2);
+            
         }
 
         protected override bool OnBackButtonPressed()
@@ -157,8 +176,10 @@ namespace PineGroveMobileApp
                 else
                 {
                     (((sender as Button).Parent as Grid).FindByName("lblMaximum") as Label).IsVisible = true;
-                    Grid.SetColumnSpan((((sender as Button).Parent as Grid).FindByName("lblMaximum") as Label), 2);
+                    Grid.SetColumnSpan(((sender as Button).Parent as Grid).FindByName("lblMaximum") as Label, 2);
                 }
+                (((sender as Button).Parent as Grid).FindByName("chkVolunteer") as CheckBox).IsVisible = true;
+                (((sender as Button).Parent as Grid).FindByName("lblVolunteer") as Label).IsVisible = true;
                 (sender as Button).Text = "Confirm";
             }
             else
@@ -166,19 +187,31 @@ namespace PineGroveMobileApp
                 try
                 {
                     (sender as Button).IsEnabled = false;
-                    UserDialogs.Instance.Toast(new ToastConfig("Attempting to register...") { BackgroundColor = App.toastColor });
+                    UserDialogs.Instance.Toast(new ToastConfig("Attempting to register...") { BackgroundColor = App.toastColor, Duration = TimeSpan.FromMilliseconds(App.timeoutTime) });
                     CancellationTokenSource source = new CancellationTokenSource();
                     source.CancelAfter((int)App.timeoutTime);
                     int index = Children.IndexOf((((((sender as Button).Parent as Grid).Parent as StackLayout).Parent as ScrollView).Parent as StackLayout).Parent as ContentPage);
-                    await client.CreateRegistration(new Models.EventRegistration()
+                    if (!(((sender as Button).Parent as Grid).FindByName("chkVolunteer") as CheckBox).IsChecked)
                     {
-                        EventId = events[index].EventId,
-                        UserId = (await client.GetUser(Application.Current.Properties["Username"].ToString(), source.Token)).UserId,
-                        Guests = (int)(((sender as Button).Parent as Grid).FindByName("stpGuests") as Stepper).Value
-                    }, source.Token);
-                    events[index].CurrentAttendees += (int)(((sender as Button).Parent as Grid).FindByName("stpGuests") as Stepper).Value + 1;
-                    UserDialogs.Instance.Toast(new ToastConfig("Updating database...") { BackgroundColor = App.toastColor });
-                    await client.UpdateEvent(events[index].EventId, events[index], source.Token);
+                        await client.CreateRegistration(new Models.EventRegistration()
+                        {
+                            EventId = events[index].EventId,
+                            UserId = (await client.GetUser(Application.Current.Properties["Username"].ToString(), source.Token)).UserId,
+                            Guests = (int)(((sender as Button).Parent as Grid).FindByName("stpGuests") as Stepper).Value
+                        }, source.Token);
+                        events[index].CurrentAttendees += (int)(((sender as Button).Parent as Grid).FindByName("stpGuests") as Stepper).Value + 1;
+                        UserDialogs.Instance.Toast(new ToastConfig("Updating database...") { BackgroundColor = App.toastColor });
+                        await client.UpdateEvent(events[index].EventId, events[index], source.Token);
+                    }
+                    else
+                    {
+                        await client.CreateRegistration(new Models.EventRegistration()
+                        {
+                            EventId = events[index].EventId,
+                            UserId = (await client.GetUser(Application.Current.Properties["Username"].ToString(), source.Token)).UserId,
+                            Guests = 0
+                        }, source.Token);
+                    }
                     UserDialogs.Instance.Toast(new ToastConfig("Registration successful!") { BackgroundColor = App.toastColor });
                     await Navigation.PopModalAsync();
                     MakePages();
@@ -205,6 +238,29 @@ namespace PineGroveMobileApp
         private void StpGuests_ValueChanged(object sender, ValueChangedEventArgs e)
         {
             (((sender as Stepper).Parent as Grid).FindByName("txtStepper") as Label).Text = "Current value: " + ((int)e.NewValue).ToString();
+        }
+
+        private void ChkVolunteer_CheckedChanged(object sender, CheckedChangedEventArgs e)
+        {
+            if (e.Value)
+            {
+                ((((sender as CheckBox).Parent as Grid).Parent as Grid).FindByName("lblGuests") as Label).IsVisible = false;
+                ((((sender as CheckBox).Parent as Grid).Parent as Grid).FindByName("stpGuests") as Stepper).IsVisible = false;
+                ((((sender as CheckBox).Parent as Grid).Parent as Grid).FindByName("lblMaximum") as Label).IsVisible = false;
+                ((((sender as CheckBox).Parent as Grid).Parent as Grid).FindByName("txtStepper") as Label).IsVisible = false;
+            }
+            else if (((((sender as CheckBox).Parent as Grid).Parent as Grid).FindByName("stpGuests") as Stepper).Minimum != -1)
+            {
+                ((((sender as CheckBox).Parent as Grid).Parent as Grid).FindByName("lblGuests") as Label).IsVisible = true;
+                ((((sender as CheckBox).Parent as Grid).Parent as Grid).FindByName("stpGuests") as Stepper).IsVisible = true;
+                ((((sender as CheckBox).Parent as Grid).Parent as Grid).FindByName("lblMaximum") as Label).IsVisible = true;
+                ((((sender as CheckBox).Parent as Grid).Parent as Grid).FindByName("txtStepper") as Label).IsVisible = true;
+            }
+            else
+            {
+                (((sender as Button).Parent as Grid).FindByName("lblMaximum") as Label).IsVisible = true;
+                Grid.SetColumnSpan(((sender as Button).Parent as Grid).FindByName("lblMaximum") as Label, 2);
+            }
         }
     }
 

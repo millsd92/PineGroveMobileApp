@@ -50,32 +50,36 @@ namespace PineGroveMobileApp
 
         private async void BtnRegister_Clicked(object sender, EventArgs e)
         {
-            if (await UserDialogs.Instance.ConfirmAsync(new ConfirmConfig()
+            if (lblLogout.Text.Equals("Edit User / Logout"))
             {
-                Title = "Option Selection",
-                Message = "Please, choose an option below:",
-                OkText = "Logout",
-                CancelText = "Edit Current User"
-            }))
-            {
-                if (Application.Current.Properties.Remove("Username"))
-                    UserDialogs.Instance.Toast(new ToastConfig("Successfully logged out!") { BackgroundColor = App.toastColor });
-                Application.Current.MainPage = new LoginPage(ref client);
+                string results = await UserDialogs.Instance.ActionSheetAsync("Choose an option below:", "Cancel", null, null, new string[] { "Edit Current User", "Logout" });
+                if (results.Equals("Logout"))
+                {
+                    if (Application.Current.Properties.Remove("Username"))
+                        UserDialogs.Instance.Toast(new ToastConfig("Successfully logged out!") { BackgroundColor = App.toastColor });
+                    Application.Current.MainPage = new LoginPage(ref client);
+                }
+                else if (results.Equals("Edit Current User"))
+                {
+                    System.Threading.CancellationTokenSource source = new System.Threading.CancellationTokenSource();
+                    source.CancelAfter((int)App.timeoutTime);
+                    UserDialogs.Instance.Toast(new ToastConfig("Loading user details... Please wait.") { BackgroundColor = App.toastColor, Duration = TimeSpan.FromMilliseconds(App.timeoutTime) });
+                    Models.User currentUser = await client.GetUser(Application.Current.Properties["Username"].ToString(), source.Token);
+                    UserDialogs.Instance.Toast(new ToastConfig("User details successfully loaded!") { BackgroundColor = App.toastColor });
+                    await Navigation.PushModalAsync(new RegistrationPage(ref client, currentUser));
+                }
             }
             else
-            {
-                System.Threading.CancellationTokenSource source = new System.Threading.CancellationTokenSource();
-                source.CancelAfter((int)App.timeoutTime);
-                UserDialogs.Instance.Toast(new ToastConfig("Loading user details... Please wait.") { BackgroundColor = App.toastColor, Duration = TimeSpan.FromMilliseconds(App.timeoutTime) });
-                Models.User currentUser = await client.GetUser(Application.Current.Properties["Username"].ToString(), source.Token);
-                UserDialogs.Instance.Toast(new ToastConfig("User details successfully loaded!") { BackgroundColor = App.toastColor });
-                await Navigation.PushModalAsync(new RegistrationPage(ref client, currentUser));
-            }
+                Application.Current.MainPage = new LoginPage(ref client);
         }
 
-        private void BtnRequest_Clicked(object sender, EventArgs e)
+        private async void BtnRequest_Clicked(object sender, EventArgs e)
         {
-
+            string results = await UserDialogs.Instance.ActionSheetAsync("Choose an option below:", "Cancel", null, null, new string[] { "Prayer Request", "Request a Visit" });
+            if (results.Equals("Prayer Request"))
+                await Navigation.PushModalAsync(new PrayerRequestPage(ref client));
+            else if (results.Equals("Request a Visit"))
+                await Navigation.PushModalAsync(new VisitRequestPage(ref client));
         }
 
         private void BtnAnnouncement_Pressed(object sender, EventArgs e)

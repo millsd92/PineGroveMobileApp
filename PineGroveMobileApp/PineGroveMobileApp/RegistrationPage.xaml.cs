@@ -23,6 +23,16 @@ namespace PineGroveMobileApp
             SetUpGrid();
         }
 
+        public RegistrationPage(ref Services.RestClient client, string firstName, string lastName)
+        {
+            this.client = client;
+            InitializeComponent();
+            SetUpPage();
+            SetUpGrid();
+            txtFirstName.Text = firstName;
+            txtLastName.Text = lastName;
+        }
+
         public RegistrationPage(ref Services.RestClient client, Models.User user)
         {
             this.client = client;

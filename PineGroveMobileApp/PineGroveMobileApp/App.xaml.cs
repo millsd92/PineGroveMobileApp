@@ -8,14 +8,14 @@ namespace PineGroveMobileApp
     {
         private readonly RestClient client;
         public static readonly System.Drawing.Color toastColor = System.Drawing.Color.FromArgb(51, 51, 51);
-        public static readonly double timeoutTime = 10000;
+        public static readonly double timeoutTime = 15000;
         public App()
         {
             InitializeComponent();
             if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
                 client = new RestClient();
-                _ = client.GetUser("none", new System.Threading.CancellationToken());   //Warm up the API to prevent harsh "cold start" time
+                _ = client.GetUser("none", new System.Threading.CancellationToken());   //Warm up the API to help prevent harsh "cold start" time
                 if (Properties.ContainsKey("Username"))
                     MainPage = new MainPage(ref client);
                 else
