@@ -84,7 +84,7 @@ namespace PineGroveMobileApp
                 }
             Label lblGuests = page.FindByName("lblGuests") as Label;
             Stepper stpGuests = page.FindByName("stpGuests") as Stepper;
-            if ((events[index].MaxAttendees ?? int.MaxValue) - events[index].CurrentAttendees < 10)
+            if ((events[index].MaxAttendees ?? int.MaxValue) - events[index].CurrentAttendees < 11)
             {
                 if ((events[index].MaxAttendees ?? int.MaxValue) - events[index].CurrentAttendees > 1)
                     stpGuests.Maximum = (double)(events[index].MaxAttendees - events[index].CurrentAttendees - 1);
