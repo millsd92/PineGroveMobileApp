@@ -10,26 +10,38 @@ using System.Collections.Generic;
 
 namespace PineGroveMobileApp
 {
+    // This is the page people will go when they need to lookup their username.
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class LookupPage : ContentPage
     {
+        // Private class variables.
         private double width = 0, height = 0;
         private RestClient client;
         private Models.User user;
         private bool oneUser = false;
         private bool searching = true;
+
+        /// <summary>
+        /// The page for the user to lookup their username based on their first and last names.
+        /// </summary>
+        /// <param name="client">The REST Client.</param>
         public LookupPage(ref RestClient client)
         {
-            this.client = client;
-            InitializeComponent();
-            txtFirstName.TextChanged += TxtName_Changed;
-            txtLastName.TextChanged += TxtName_Changed;
-            txtFirstName.Keyboard = Keyboard.Create(KeyboardFlags.CapitalizeWord);
-            txtLastName.Keyboard = Keyboard.Create(KeyboardFlags.CapitalizeWord);
-            txtFirstName.ReturnCommand = new Command(() => txtLastName.Focus());
-            txtLastName.ReturnCommand = new Command(() => BtnSearch_Clicked(null, null));
+            this.client = client;   // Using the same RestClient from the beginning.
+            InitializeComponent();  // Necessary statement.
+            txtFirstName.TextChanged += TxtName_Changed;    // Adding the same event handler
+            txtLastName.TextChanged += TxtName_Changed;     // for both text boxes.
+            txtFirstName.Keyboard = Keyboard.Create(KeyboardFlags.CapitalizeWord);  // Custom keyboards for both
+            txtLastName.Keyboard = Keyboard.Create(KeyboardFlags.CapitalizeWord);   // textboxes that capitalize all words.
+            txtFirstName.ReturnCommand = new Command(() => txtLastName.Focus());    // Adding a command so when the user is done with one textbox
+            txtLastName.ReturnCommand = new Command(() => BtnSearch_Clicked(null, null));   // it either goes to the next or submits the form (depending on which one it is).
         }
 
+        /// <summary>
+        /// This resets the results of the search due to the first or last name textbox's text being changed.
+        /// </summary>
+        /// <param name="sender">The object that causes the event.</param>
+        /// <param name="e">Event arguments.</param>
         private void TxtName_Changed(object sender, TextChangedEventArgs e)
         {
             btnSearch.Text = "Search";
@@ -39,6 +51,11 @@ namespace PineGroveMobileApp
             searching = true;
         }
 
+        /// <summary>
+        /// This is called when the size of the screen is changed.
+        /// </summary>
+        /// <param name="width">The new width of the screen.</param>
+        /// <param name="height">The new height of the screen.</param>
         protected override void OnSizeAllocated(double width, double height)
         {
             if (this.width != width || this.height != height)
@@ -53,6 +70,9 @@ namespace PineGroveMobileApp
             base.OnSizeAllocated(width, height);
         }
 
+        /// <summary>
+        /// Changes the grid to suit a landscape screen orientation.
+        /// </summary>
         private void LandscapeOrientation()
         {
             grdAll.Children.Clear();
@@ -80,6 +100,9 @@ namespace PineGroveMobileApp
             Grid.SetColumnSpan(btnLogin, 2);
         }
 
+        /// <summary>
+        /// Changes the grid to suit a portrait screen orientation.
+        /// </summary>
         private void PortraitOrientation()
         {
             grdAll.Children.Clear();
@@ -105,7 +128,11 @@ namespace PineGroveMobileApp
             Grid.SetColumnSpan(btnLogin, 2);
         }
 
-
+        /// <summary>
+        /// This event handler is called when the search button is pressed.
+        /// </summary>
+        /// <param name="sender">The object that causes the event.</param>
+        /// <param name="e">Event arguments.</param>
         private async void BtnSearch_Clicked(object sender, EventArgs e)
         {
             if (searching)
@@ -217,6 +244,10 @@ namespace PineGroveMobileApp
             }
         }
 
+        /// <summary>
+        /// Displays a given user's information.
+        /// </summary>
+        /// <param name="user">The user who's information is to be presented.</param>
         private void DisplayUser(Models.User user)
         {
             lblUsername.Text = user.UserName;
@@ -230,6 +261,11 @@ namespace PineGroveMobileApp
                 lblPhone.Text = "(XXX) XXX-" + (user.PhoneNumber % 10000).ToString();
         }
 
+        /// <summary>
+        /// This event is called when the login button is pressed.
+        /// </summary>
+        /// <param name="sender">The object that causes the event.</param>
+        /// <param name="e">Event arguments.</param>
         private async void BtnLogin_Clicked(object sender, EventArgs e)
         {
             if (lblUsername.Text.Equals("N/A"))
@@ -247,6 +283,10 @@ namespace PineGroveMobileApp
             }
         }
 
+        /// <summary>
+        /// This event is called upon a request timeout.
+        /// </summary>
+        /// <param name="message">The message to be displayed upon timeout.</param>
         private void Timer_Elapsed(string message)
         {
             Device.BeginInvokeOnMainThread(async () =>

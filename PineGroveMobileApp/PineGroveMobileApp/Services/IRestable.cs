@@ -5,6 +5,9 @@ using System.Threading;
 
 namespace PineGroveMobileApp.Services
 {
+    /// <summary>
+    /// This is the interface that actually provides the access to the API.
+    /// </summary>
     public interface IRestable
     {
         [Get("/api/users")]
