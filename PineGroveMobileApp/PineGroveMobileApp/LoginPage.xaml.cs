@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using Acr.UserDialogs;
@@ -44,9 +43,7 @@ namespace PineGroveMobileApp
                 // Now we attempt to log them in.
                 try
                 {
-                    CancellationTokenSource tokenSource = new CancellationTokenSource();
-                    tokenSource.CancelAfter((int)App.timeoutTime);                              // Timeout after 15 seconds.
-                    var user = await client.GetUser(txtUsername.Text, tokenSource.Token);       // Call the API and try to get the user.
+                    var user = await client.GetUser(txtUsername.Text);       // Call the API and try to get the user.
                     config.Message = "Successfully logged in as " + user.FirstName + " " + user.LastName + "!"; // Success!
                     config.Duration = TimeSpan.FromSeconds(2);                                  // Reset the length of time the toast message is displayed.
                     UserDialogs.Instance.Toast(config);                                         // Show the toast message.

@@ -4,7 +4,6 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using PineGroveMobileApp.Services;
 using Acr.UserDialogs;
-using System.Threading;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
 
@@ -48,6 +47,7 @@ namespace PineGroveMobileApp
             lblEmail.Text = "N/A";
             lblPhone.Text = "N/A";
             lblUsername.Text = "N/A";
+            oneUser = false;
             searching = true;
         }
 
@@ -159,9 +159,7 @@ namespace PineGroveMobileApp
                     {
                         try
                         {
-                            CancellationTokenSource tokenSource = new CancellationTokenSource();
-                            tokenSource.CancelAfter((int)App.timeoutTime);
-                            Models.User[] users = await client.GetUsersByName(firstName, lastName, tokenSource.Token);
+                            Models.User[] users = await client.GetUsersByName(firstName, lastName);
                             if (users.Length == 1)
                             {
                                 config.Message = "Only one user found!";

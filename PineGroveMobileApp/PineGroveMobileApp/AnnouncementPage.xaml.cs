@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 using PineGroveMobileApp.Services;
 using PineGroveMobileApp.Models;
 using Xamarin.Forms;
@@ -74,10 +73,8 @@ namespace PineGroveMobileApp
                 {
                     // Let the user know that there is something happening.
                     UserDialogs.Instance.Toast(new ToastConfig("Attempting to post announcement request...") { BackgroundColor = App.toastColor, Duration = TimeSpan.FromMilliseconds(App.timeoutTime) });
-                    CancellationTokenSource source = new CancellationTokenSource();
-                    source.CancelAfter((int)App.timeoutTime);
                     // Get the user so we can get the user ID.
-                    User user = await client.GetUser(Application.Current.Properties["Username"].ToString(), source.Token);
+                    User user = await client.GetUser(Application.Current.Properties["Username"].ToString());
                     // Create the announcement model.
                     AnnouncementRequest announcement = new AnnouncementRequest()
                     {
@@ -86,7 +83,7 @@ namespace PineGroveMobileApp
                         Announcement = txtTitle.Text + " - " + txtDescription.Text,
                     };
                     // Post the announcement to the database.
-                    await client.CreateAnnouncement(announcement, source.Token);
+                    await client.CreateAnnouncement(announcement);
                     txtDescription.Text = "";   // Clear the
                     txtTitle.Text = "";         // entry form.
                     // Let the user know it has been submitted!

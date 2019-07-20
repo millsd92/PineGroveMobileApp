@@ -89,10 +89,8 @@ namespace PineGroveMobileApp
                 }
                 else if (results.Equals("Edit Current User"))
                 {
-                    System.Threading.CancellationTokenSource source = new System.Threading.CancellationTokenSource();
-                    source.CancelAfter((int)App.timeoutTime);
                     UserDialogs.Instance.Toast(new ToastConfig("Loading user details... Please wait.") { BackgroundColor = App.toastColor, Duration = TimeSpan.FromMilliseconds(App.timeoutTime) });
-                    Models.User currentUser = await client.GetUser(Application.Current.Properties["Username"].ToString(), source.Token);
+                    Models.User currentUser = await client.GetUser(Application.Current.Properties["Username"].ToString());
                     UserDialogs.Instance.Toast(new ToastConfig("User details successfully loaded!") { BackgroundColor = App.toastColor });
                     await Navigation.PushModalAsync(new RegistrationPage(ref client, currentUser));
                 }

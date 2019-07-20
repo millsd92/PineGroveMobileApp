@@ -4,7 +4,6 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using Refit;
 using Acr.UserDialogs;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace PineGroveMobileApp
@@ -238,8 +237,6 @@ namespace PineGroveMobileApp
             // Now we try to create (or edit) the user.
             try
             {
-                CancellationTokenSource source = new CancellationTokenSource(); // I should have made a static CancellationTokenSource in the App.xaml.cs file to avoid having to do this every time... Or just built it into the RestClient class.
-                source.CancelAfter((int)App.timeoutTime);
                 // If we are not editing an already-existing user, we have to generate a user name before posting.
                 if (!editing)
                 {
@@ -248,13 +245,13 @@ namespace PineGroveMobileApp
                     // Make the first call to the recursive function to generate a username. This function works well for this environment where multiple users having the same first three of their first name and first three of their last name
                     // is relatively uncommon, but in different environment I would find a better, non-recursive way of doing this. There are clearly limitations on this kind of username as well. However, at the end of the day, this is for a
                     // church of only 300 or so people. So, it works for now.
-                    newUser.UserName = await GenerateUsername(newUser.FirstName, newUser.LastName, 1, source);
+                    newUser.UserName = await GenerateUsername(newUser.FirstName, newUser.LastName, 1);
                     // If something happened and it broke, stop the process. The generate username method already shows an error message.
                     if (newUser.UserName == null)
                         return;
                     // Let them know we are done generating a username.
                     UserDialogs.Instance.Toast(new ToastConfig("Posting new user to database...") { BackgroundColor = App.toastColor, Duration = TimeSpan.FromMilliseconds(App.timeoutTime) });
-                    await client.CreateUser(newUser, source.Token);
+                    await client.CreateUser(newUser);
                     // Save the new username to the local storage.
                     Application.Current.Properties["Username"] = newUser.UserName;
                     await Application.Current.SavePropertiesAsync();
@@ -265,7 +262,7 @@ namespace PineGroveMobileApp
                 {
                     // If we were editing, we can bypass the generation of the username and just go with whatever information was changed.
                     UserDialogs.Instance.Toast(new ToastConfig("Updating database...") { BackgroundColor = App.toastColor, Duration = TimeSpan.FromMilliseconds(App.timeoutTime) });
-                    await client.UpdateUser(newUser.UserId, newUser, source.Token); // Perform a PUT instead of a POST on the API.
+                    await client.UpdateUser(newUser.UserId, newUser); // Perform a PUT instead of a POST on the API.
                     UserDialogs.Instance.Toast(new ToastConfig("User edit successful!") { BackgroundColor = App.toastColor });  // Let them know we succeeded.
                 }
                 Application.Current.MainPage = new MainPage(ref client);
@@ -328,7 +325,7 @@ namespace PineGroveMobileApp
         /// <param name="userNumber">The number appended to the end of the user's username.</param>
         /// <param name="source">A cancellation token source to generate CancellationToken objects as needed.</param>
         /// <returns>An awaitable task who's result is the user's username as a string.</returns>
-        private async Task<string> GenerateUsername(string firstName, string lastName, int userNumber, CancellationTokenSource source)
+        private async Task<string> GenerateUsername(string firstName, string lastName, int userNumber)
         {
             // First we get their first three of the first and last names (or how many of the letters we can fit if there are less than three).
             string userName;
@@ -344,8 +341,8 @@ namespace PineGroveMobileApp
             // Try to get the user from the database via an API GET call.
             try
             {
-                await client.GetUser(userName, source.Token);   // Call the API.
-                return await GenerateUsername(firstName, lastName, userNumber + 1, source); // If we got someone back, call this function again but with a different user number.
+                await client.GetUser(userName);   // Call the API.
+                return await GenerateUsername(firstName, lastName, userNumber + 1); // If we got someone back, call this function again but with a different user number.
             }
             catch (ValidationApiException)
             {

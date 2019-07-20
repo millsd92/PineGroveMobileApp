@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using Acr.UserDialogs;
-using System.Threading;
 
 namespace PineGroveMobileApp
 {
@@ -88,8 +87,6 @@ namespace PineGroveMobileApp
             {
                 try
                 {
-                    CancellationTokenSource source = new CancellationTokenSource();
-                    source.CancelAfter((int)App.timeoutTime);
                     // Let the user know we are creating the prayer request.
                     UserDialogs.Instance.Toast(new ToastConfig("Creating prayer request...") { BackgroundColor = App.toastColor, Duration = TimeSpan.FromMilliseconds(App.timeoutTime) });
                     // Build the actual prayer request model using the information provided.
@@ -97,9 +94,9 @@ namespace PineGroveMobileApp
                     {
                         PrayerDate = DateTime.Now,
                         PrayerDescription = txtDescription.Text,
-                        UserId = (chkAnonymous.IsChecked ? -1 : (await client.GetUser(Application.Current.Properties["Username"].ToString(), source.Token)).UserId) // If anonymous is selected, use the -1 user ID (the special anonymous user).
+                        UserId = (chkAnonymous.IsChecked ? -1 : (await client.GetUser(Application.Current.Properties["Username"].ToString())).UserId) // If anonymous is selected, use the -1 user ID (the special anonymous user).
                     };
-                    await client.CreatePrayerRequest(prayerRequest, source.Token);  // Actually post the new prayer request.
+                    await client.CreatePrayerRequest(prayerRequest);  // Actually post the new prayer request.
                     // Let the user know the request was created.
                     UserDialogs.Instance.Toast(new ToastConfig("Prayer request posted!") { BackgroundColor = App.toastColor });
                     // Reset the form.

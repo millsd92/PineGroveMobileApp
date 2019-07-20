@@ -34,7 +34,7 @@ namespace PineGroveMobileApp
                 // There is still a chance that the user will time out the first request, however. In true production environments, I would A) not use AWS but
                 // rather use Azure, B) if I had to use AWS I would ping the Lambda more frequently and simultaneously at peak usage times to help with this,
                 // and C) not use C#... C# Lambda functions take drastically longer than Python, JavaScript, Java, Go, or Ruby Lambda functions do.
-                _ = client.GetUser("none", new System.Threading.CancellationToken());
+                _ = client.GetUser("none");
                 // If the user has already logged in, keep them logged in on start.
                 if (Properties.ContainsKey("Username"))
                     MainPage = new MainPage(ref client);

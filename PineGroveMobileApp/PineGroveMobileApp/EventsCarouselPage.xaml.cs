@@ -5,7 +5,6 @@ using Xamarin.Forms.Xaml;
 using PineGroveMobileApp.Services;
 using System.Globalization;
 using System.IO;
-using System.Threading;
 using Acr.UserDialogs;
 using System.Collections.Generic;
 
@@ -239,8 +238,6 @@ namespace PineGroveMobileApp
                         (sender as Button).IsEnabled = false;   // First, lets ensure that the user can't spam press the button and make a whole bunch of requests at the same time...
                                                                 // Then lets show them a message saying we are working on their registration.
                         UserDialogs.Instance.Toast(new ToastConfig("Attempting to register...") { BackgroundColor = App.toastColor, Duration = TimeSpan.FromMilliseconds(App.timeoutTime) });
-                        CancellationTokenSource source = new CancellationTokenSource();
-                        source.CancelAfter((int)App.timeoutTime);
                         int index = Children.IndexOf((((((sender as Button).Parent as Grid).Parent as StackLayout).Parent as ScrollView).Parent as StackLayout).Parent as ContentPage); // Fun line just to get the index of this page... Six nested parentheses...
                         // If they are not volunteering, we need to add the stepper's value to the event itself as well.
                         if (!(((sender as Button).Parent as Grid).FindByName("chkVolunteer") as CheckBox).IsChecked)
@@ -249,24 +246,24 @@ namespace PineGroveMobileApp
                             await client.CreateRegistration(new Models.EventRegistration()
                             {
                                 EventId = events[index].EventId,
-                                UserId = (await client.GetUser(Application.Current.Properties["Username"].ToString(), source.Token)).UserId,
+                                UserId = (await client.GetUser(Application.Current.Properties["Username"].ToString())).UserId,
                                 Guests = (int)(((sender as Button).Parent as Grid).FindByName("stpGuests") as Stepper).Value
-                            }, source.Token);
+                            });
                             // Now let's add the guests to the event...
                             events[index].CurrentAttendees += (int)(((sender as Button).Parent as Grid).FindByName("stpGuests") as Stepper).Value + 1;
                             // ... let the user know we are updating the database for the event now...
                             UserDialogs.Instance.Toast(new ToastConfig("Updating database...") { BackgroundColor = App.toastColor });
                             // ... and update the database for real.
-                            await client.UpdateEvent(events[index].EventId, events[index], source.Token);
+                            await client.UpdateEvent(events[index].EventId, events[index]);
                         }
                         // Otherwise they are volunteering and it becomes a bit easier.
                         else // We just need to create an event registration for the database with no guests.
                             await client.CreateRegistration(new Models.EventRegistration()
                             {
                                 EventId = events[index].EventId,
-                                UserId = (await client.GetUser(Application.Current.Properties["Username"].ToString(), source.Token)).UserId,
+                                UserId = (await client.GetUser(Application.Current.Properties["Username"].ToString())).UserId,
                                 Guests = 0
-                            }, source.Token);
+                            });
                         // Volunteers do not count as attending the event so we do not need to update the event.
                         UserDialogs.Instance.Toast(new ToastConfig("Registration successful!") { BackgroundColor = App.toastColor });
                         await Navigation.PopModalAsync();   // Let's re-bind the events to the page to update

@@ -203,8 +203,6 @@ namespace PineGroveMobileApp
                     visitRequest.State = lstState.Items[lstState.SelectedIndex];
                 // Now, let the user know that we are greating a request for them.
                 UserDialogs.Instance.Toast(new ToastConfig("Creating visit request...") { BackgroundColor = App.toastColor });
-                System.Threading.CancellationTokenSource source = new System.Threading.CancellationTokenSource();
-                source.CancelAfter((int)App.timeoutTime);
                 visitRequest.Reason = txtDescription.Text;
                 visitRequest.RequestDate = DateTime.Now;
                 // If we do not have the current user in memory, we need to get them.
@@ -213,7 +211,7 @@ namespace PineGroveMobileApp
                     try
                     {
                         UserDialogs.Instance.Toast(new ToastConfig("Fetching user details...") { BackgroundColor = App.toastColor, Duration = TimeSpan.FromMilliseconds(App.timeoutTime) });
-                        currentUser = await client.GetUser(Application.Current.Properties["Username"].ToString(), source.Token);
+                        currentUser = await client.GetUser(Application.Current.Properties["Username"].ToString());
                         UserDialogs.Instance.Toast(new ToastConfig("Fetched user details!") { BackgroundColor = App.toastColor });
                     }
                     catch (Refit.ValidationApiException)    // Bad information...
@@ -244,7 +242,7 @@ namespace PineGroveMobileApp
                 {
                     // Inform our user...
                     UserDialogs.Instance.Toast(new ToastConfig("Posting visit request...") { BackgroundColor = App.toastColor, Duration = TimeSpan.FromMilliseconds(App.timeoutTime) });
-                    await client.CreateVisitRequest(visitRequest, source.Token);
+                    await client.CreateVisitRequest(visitRequest);
                     // ... of the success!
                     UserDialogs.Instance.Toast(new ToastConfig("Visit request successfully posted!") { BackgroundColor = App.toastColor });
                     BtnClear_Clicked(sender, e);    // Clear the form.
@@ -320,8 +318,6 @@ namespace PineGroveMobileApp
                 // Now we need to ensure the other checkboxes are not checked.
                 chkChurch.IsChecked = false;
                 chkOther.IsChecked = false;
-                System.Threading.CancellationTokenSource source = new System.Threading.CancellationTokenSource();
-                source.CancelAfter((int)App.timeoutTime);
                 // If we don't currently have the user in memory and there is a user logged in, fall here.
                 if (currentUser is null && Application.Current.Properties.ContainsKey("Username"))
                 {
@@ -329,7 +325,7 @@ namespace PineGroveMobileApp
                     {
                         // Let the user know what is happening.
                         UserDialogs.Instance.Toast(new ToastConfig("Fetching user details...") { BackgroundColor = App.toastColor, Duration = TimeSpan.FromMilliseconds(App.timeoutTime) });
-                        currentUser = await client.GetUser(Application.Current.Properties["Username"].ToString(), source.Token);
+                        currentUser = await client.GetUser(Application.Current.Properties["Username"].ToString());
                         // Get the user's address from the database. If there is no address, there isn't an address line one for this model.
                         if (currentUser.AddressLineOne is null)
                             UserDialogs.Instance.Toast(new ToastConfig("No address on file for user!") { BackgroundColor = App.toastColor });   // Communicate with our user.
