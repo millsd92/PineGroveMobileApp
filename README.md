@@ -1,2 +1,4 @@
 # Pine Grove Mobile Application
-This is the Pine Grove Mobile Application.
+This is a mobile application, written using Xamarin.Forms, that provides the Pine Grove United Methodist Church an electronic way of creating a user (AKA becoming a church member), searching for an existing user, submitting prayer requests, requesting a visit from the pastor (or other church management), viewing and registering for events, and requesting an announcement to be made to the congregation during a service.
+### Purpose
+This project was designed to fulfill the 'Mobile Application' portion of Forsyth Technical Community College's Internet Technology Programming Capstone Project. The project includes interviewing a real-life client (Pine Grove United Methodist Church, in this case), gathering their Internet Technology requirements, building their mobile application, web form, and desktop application modeled after their requirements, keeping in touch and updating the client as well as mock management (our professors, in this case) with weekly memos and timesheets, and deploying the fully-finished solutions to a mock production environment.
